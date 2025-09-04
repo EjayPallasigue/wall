@@ -86,7 +86,7 @@ class SupabasePostService {
     const fileName = `${crypto.randomUUID()}.${fileExt}`;
     const filePath = `images/${new Date().getFullYear()}/${new Date().getMonth() + 1}/${fileName}`;
 
-    const { data, error } = await supabase.storage
+    const { error } = await supabase.storage
       .from('wall-uploads')
       .upload(filePath, file);
 

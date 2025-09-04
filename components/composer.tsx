@@ -29,7 +29,6 @@ export function Composer() {
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    console.log('Form submitted with:', { name, text, imageFile });
     
     if (!text.trim()) {
       showToast({ message: "Please enter a message.", variant: "destructive" });
@@ -44,25 +43,19 @@ export function Composer() {
     try {
       let imageUrl: string | null = null;
       if (imageFile) {
-        console.log('Uploading image:', imageFile.name);
         try {
           imageUrl = await postService.uploadImage(imageFile);
-          console.log('Image uploaded successfully:', imageUrl);
-        } catch (error) {
-          console.error('Image upload failed:', error);
+        } catch {
           showToast({ message: "Failed to upload photo. Please try again.", variant: "destructive" });
           setIsSubmitting(false);
           return;
         }
       }
 
-      console.log('Creating post...');
       await postService.create({ name: name || "Anonymous", text, imageUrl });
-      console.log('Post created successfully');
       resetForm();
       showToast({ message: "Shared!", variant: "success" });
     } catch (error) {
-      console.error('Post creation failed:', error);
       showToast({ message: `Failed to create post: ${error instanceof Error ? error.message : 'Unknown error'}`, variant: "destructive" });
     } finally {
       setIsSubmitting(false);

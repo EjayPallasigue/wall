@@ -11,9 +11,9 @@ function readPostsFromLocalStorage(): Post[] {
     if (!raw) return [];
     const parsed = JSON.parse(raw) as unknown;
     if (!Array.isArray(parsed)) return [];
-    return parsed.filter((p) =>
-      p && typeof p === "object" && typeof (p as any).id === "string"
-    ) as Post[];
+    return parsed.filter((p): p is Post =>
+      p && typeof p === "object" && typeof (p as Record<string, unknown>).id === "string"
+    );
   } catch {
     return [];
   }
